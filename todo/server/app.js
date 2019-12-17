@@ -33,6 +33,12 @@ app.post('/todos',(req,res) => {
     res.json(todoList);
 });
 
+// create a DELETE endpoint on /todos
+app.delete('/todos',(req, res) => {
+    console.log('I got a delete reqest...')
+    res.json(todoList);
+});
+
 // start server
 app.listen(3000, () => {
     console.log('Server running on localhost:3000');

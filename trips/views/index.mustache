@@ -1,0 +1,64 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body        {font-family: sans-serif;
+                 font-size: 20px;}
+    #header     {display: flex;}
+    #container  {display: flex;
+                 flex-direction: column;}
+    img         {max-width: 100%;
+                 height: auto;}
+    .trip       {position: relative;
+                 text-align: center;
+                 color: white;}
+    .tripText   {position: absolute;
+                 top: 16px;
+                 left: 32px;}
+    .tripTextEl {display: inline-block;
+                 margin: 10px;}
+    #addButton  {color: white;
+                 background-color: steelblue;
+                 font-size: 15px;
+                 border-radius: 5px;
+                 padding: 3px;}
+    #dest       {font-size: 15px;}
+    #dep        {font-size: 15px;}
+    #ret        {font-size: 15px;}
+  </style>
+</head>
+
+<body>
+  <div id="header">
+    <form method="POST" action="/">
+      <select id="dest" name="dest">
+        {{#cities}}
+          <option value="{{.}}">{{.}}</option>
+        {{/cities}}
+      </select>
+      <!-- <input type="text" placeholder="destination" id="dest" name="dest"/> -->
+      <input type="date" placeholder="departure" id="dep" name="dep"/>
+      <input type="date" placeholder="return" id="ret" name="ret"/>
+      <button id="addButton">Add Trip</button>
+    </form>
+  </div>
+  <div id="container">
+    {{#trips}}
+      <div class="trip">
+        <form method="POST" action="/remove">
+          <img src="{{imageURL}}" alt="{{dest}}">
+          <div class="tripText">
+            <div class="tripTextEl">{{dest}}</div>
+            <div class="tripTextEl">{{dep}}</div>
+            <div class="tripTextEl">{{ret}}</div>
+            <button>Delete</button>
+          </div>
+          <input type="hidden" value="{{timestamp}}" name="delTrip"/>
+        </form>
+      </div>
+    {{/trips}}
+  </div>
+</body>
+
+</html>
