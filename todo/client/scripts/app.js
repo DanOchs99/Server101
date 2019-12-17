@@ -5,6 +5,8 @@ const taskTextbox = document.getElementById('taskTextbox');
 const priorityCheckbox = document.getElementById('priorityCheckbox');
 const tasks = document.getElementById('tasks');
 const completed = document.getElementById('completed');
+const instructionsButton = document.getElementById('instructionsButton');
+const instructions = document.getElementById('instructions');
 
 function getList() {
     fetch(url).then(response => response.json()).then(json => {
@@ -69,6 +71,18 @@ function hideDel(ev) {
 function delItem(ev) {
     console.log('user clicked delete!');
 }
+
+instructionsButton.addEventListener('click',(ev) => {
+    if (ev.target.innerHTML == 'Show Directions') {
+        ev.target.innerHTML = 'Hide Directions';
+        instructions.style.display = 'flex';
+    }
+    else
+    {
+        ev.target.innerHTML = 'Show Directions';
+        instructions.style.display = 'none';
+    }
+});
 
 getList();
 

@@ -25,12 +25,26 @@ body {
 
 #priorityLabel {
     display: inline-block;
-    margin-left: 30px;
-    margin-right: 15px;
+    margin: 5px 5px 0px 30px;
 }
 
 #priorityCheckbox {
     display: inline-block;
+    margin-top: 5px;
+}
+
+#instructionsButton {
+    display: inline-block;
+    color: white;
+    background-color: steelblue;
+    border-radius: 5px;
+}
+
+#instructions {
+    display: none;
+    flex-direction: column;
+    margin-left: 10px;
+    margin-top: 10px;
 }
 
 #tasks {
@@ -59,5 +73,9 @@ body {
 }
 
 .listElement {
+    padding: 5px;
+}
+
+.instructionEl {
     padding: 5px;
 }
