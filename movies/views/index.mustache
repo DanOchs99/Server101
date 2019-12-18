@@ -1,0 +1,39 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/site.css">
+  <script>
+  // move this to a more appropriate place
+  function setaction(event) {
+      // set the action based on the dropdown selection
+      let select = document.getElementById('genreDropdown');
+      let genre = select.options[select.selectedIndex].value;
+      event.target.action = `movies/genre/${genre}`;
+      event.target.submit();
+      }
+  </script>
+</head>
+
+<body>
+  {{> menu}}
+  <form method="GET" onsubmit="setaction(event);">
+    <select id="genreDropdown" name="genre" required>
+      {{> genres}}
+    </select>
+    <button id="filterButton">Filter</button>
+  </form>
+  <div id="moviesDiv">
+    {{#movies}}
+    <form method="GET" action="/movies/{{movieId}}">
+      <div class="thumbnailDiv">
+        <label class="movieTitle">{{title}}</label>
+        <button class="detailsButton">Details</button>
+        <img src="{{posterURL}}" class="smallPoster" />
+      </div>
+    </form>
+    {{/movies}}
+  </div>
+</body>
+
+</html>

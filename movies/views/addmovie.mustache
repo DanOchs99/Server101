@@ -1,0 +1,22 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/site.css">
+</head>
+
+<body>
+  {{> menu}}
+  <form method="POST" action="/movies/create">
+    <input type="text" placeholder="title" id="titleTextbox" name="title" /><br>
+    <select id="genreDropdown" name="genre" required><br>
+      {{> genres}}
+    </select>
+    <button id="submitButton">Submit</button>
+    <br>
+    <textarea placeholder="description" id="descTextarea" name="desc"></textarea><br>
+    <input type="text" placeholder="posterURL" id="urlTextbox" name="posterURL" />
+  </form>
+</body>
+
+</html>
