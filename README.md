@@ -6,8 +6,8 @@ todo - manage a todo list
 requires node packages - express, cors
 to start server @ localhost:3000 - node app.js
 
-trips - manage a list of upcoming trips
-requires node packages - express, mustache-express
+trips - manage a list of upcoming trips by user
+requires node packages - express, mustache-express, express-session, bcrypt, uuid
 to start server @ localhost:3000 - node app.js
 
 movies - manage a list of movies

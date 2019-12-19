@@ -1,0 +1,52 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/site.css" />
+  <style>
+    
+  </style>
+</head>
+
+<body>
+  <div id="user">
+    <div id="currUser">{{user}}</div>
+    <form id="logoffButtonForm" method="GET" action='/logoff'>
+      <button id="logoffButton">Logoff</button>
+    </form>
+  </div>
+  <div id="header">
+    <form method="POST" action="/trips">
+      <select id="dest" name="dest">
+        {{#cities}}
+          <option value="{{.}}">{{.}}</option>
+        {{/cities}}
+      </select>
+      <!-- <input type="text" placeholder="destination" id="dest" name="dest"/> -->
+      <input type="date" placeholder="departure" id="dep" name="dep"/>
+      <input type="date" placeholder="return" id="ret" name="ret"/>
+      <button id="addButton">Add Trip</button>
+    </form>
+  </div>
+  <div id="container">
+    {{#trips}}
+      <div class="trip">
+        <form method="POST" action="/trips/remove">
+          <img src="{{imageURL}}" alt="{{dest}}">
+          <div class="tripText">
+            <button class="delButton">X</button>
+            <div class="tripTextEl">Trip to {{dest}}</div><br>
+            <div class="tripDateEl">{{dep}}</div>
+            <div class="tripDateEl">{{ret}}</div>
+          </div>
+          <input type="hidden" value="{{tripId}}" name="delTrip"/>
+        </form>
+      </div>
+    {{/trips}}
+    {{^trips}}
+      <div id="noTrips">No trips</div>
+    {{/trips}}
+  </div>
+</body>
+
+</html>

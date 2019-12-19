@@ -1,0 +1,95 @@
+body { font-family: sans-serif;
+       font-size: 20px; }
+
+#header { display: flex; }
+
+#container { display: flex;
+             flex-direction: column; }
+
+img { max-width: 100%;
+      height: auto; }
+
+.trip { position: relative;
+        text-align: center;
+        color: white; }
+
+.tripText { position: absolute;
+            top: 16px;
+            left: 32px; }
+
+.tripTextEl { display: inline-block;
+              margin: 10px;
+              font-size: 22px; }
+
+.tripDateEl { display: inline-block;
+              margin: 10px;
+              font-size: 16px; }
+
+#addButton { color: white;
+             background-color: steelblue;
+             font-size: 15px;
+             border-radius: 5px;
+             padding: 3px; }
+
+#dest { font-size: 15px; }
+
+#dep { font-size: 15px; }
+
+#ret { font-size: 15px; }
+
+.delButton { color: red;
+             background-color: white;
+             font-weight: bold; }
+
+#loginButton, #registerButton {
+    display: block;
+    color: white;
+    background-color: steelblue;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+#userTextbox {
+    display: block;
+    font-size: 20px;
+}
+
+#pwdTextbox {
+    display: block;
+    font-size: 20px;
+}
+
+#loginMessage, #registerMessage {
+    display: block;
+    font-size: 20px;
+}
+
+#noTrips {
+    display: block;
+    margin: 10px;
+    font-size: 22px;
+    color: steelblue;
+}
+
+#logoffButton {
+    color: white;
+    background-color: steelblue;
+    font-size: 15px;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+#logoffButtonForm {
+
+}
+
+#currUser {
+    display: block;
+    margin: 10px;
+    font-size: 22px;
+    color: steelblue;
+}
+
+#user {
+    display: flex;
+}

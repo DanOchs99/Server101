@@ -1,0 +1,24 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/site.css" />
+</head>
+
+<body>
+    <form method="POST" action='/register'>
+        <input type="text" name="username" id="userTextbox" placeholder="username" />
+        <input type="password" name="password" id="pwdTextbox" placeholder="password" />
+        <button id="registerButton">Register</button>
+    </form>
+    <br>
+    <form method="GET" action='/'>
+        <button id="loginButton">Return to login...</button>
+    </form>
+    <br>
+    <div id="registerMessage">
+        {{message}}
+    </div>
+</body>
+
+</html>

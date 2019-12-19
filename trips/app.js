@@ -1,14 +1,10 @@
-class Trip {
-    constructor(dest, dep, ret) {
-        this.dest = dest;
-        this.imageURL = images[dest];
-        this.dep = dep;
-        this.ret = ret;
-        this.timestamp = new Date();
-    }
-}
+// array to hold user objects
+global.users = [];
+// array to hold trip objects
+global.trips = [];
 
-images = {};
+// object with destinations and associated images
+global.images = {};
 images['Atlanta'] = 'http://www.100resilientcities.org/wp-content/uploads/2017/06/Atlanta.jpg'
 images['Berkeley'] = 'http://www.100resilientcities.org/wp-content/uploads/2017/06/cities-berkeley_optimized.jpg';
 images['Boston'] = 'http://www.100resilientcities.org/wp-content/uploads/2017/06/Boston-hero-crop.jpg';
@@ -42,12 +38,14 @@ images['Tulsa'] = 'http://www.100resilientcities.org/wp-content/uploads/2017/06/
 images['Vancouver'] = 'http://www.100resilientcities.org/wp-content/uploads/2017/06/Vancouver.jpg';
 images['Washington, DC'] = 'http://www.100resilientcities.org/wp-content/uploads/2017/06/Washington-DC.jpg';
 
-cities = Object.keys(images);
+// an array of the available destinations
+global.cities = Object.keys(images);
 
 const express = require('express');
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 const mustacheExpress = require('mustache-express');
 
@@ -55,26 +53,34 @@ app.engine('mustache',mustacheExpress());
 app.set('views','./views');
 app.set('view engine','mustache');
 
-trips = [];
+const session = require('express-session');
+app.use(session({
+    secret: 'googlewhattouseforsessionsecretinfo',
+    resave: false,
+    saveUninitialized: true
+}));
 
-app.get('/',(req,res) => {
-    res.render('index',{cities: cities, trips: trips});
-});
+// middleware for user authentication
+function authenticate(req,res,next) {
+    if(req.session) {
+        if(req.session.isAuthenticated) {
+            next()
+        } else {
+            res.redirect('/')
+        }
+    } else {
+        res.redirect('/')
+    }
+}
 
-app.post('/',(req,res) => {
-    trip = new Trip(req.body.dest, req.body.dep, req.body.ret);
-    trips.push(trip);
-    res.redirect('/');
-});
+// use express.Routers for handle endpoints
+const indexRouter = require('./routes/index')
+const tripsRouter = require('./routes/trips')
 
-app.post('/remove',(req,res) => {
-    // remove a trip with a given timestamp
-    trips = trips.filter(function (trip) {
-        return (trip.timestamp != req.body.delTrip);
-    });
-    res.redirect('/');
-});
+app.use('/',indexRouter);
+app.use('/trips',authenticate,tripsRouter);
 
+// start the express server
 app.listen(3000,() => {
-    console.log("Server is running...");
+    console.log("Server is running at localhost:3000...");
 });
