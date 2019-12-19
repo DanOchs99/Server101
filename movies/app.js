@@ -7,8 +7,12 @@ const app = express();
 
 app.use(express.static('public'));
 
-// use urlencoded ???
+// parse incoming requests with urlencoded payloads
 app.use(express.urlencoded({ extended: true }));
+
+// middleware to handle uploading files
+const fileUpload = require('express-fileupload');
+app.use(fileUpload({ safeFileNames: true, preserveExtension: true }));
 
 // get a path to the templates directory
 const path = require('path');

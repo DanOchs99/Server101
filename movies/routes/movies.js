@@ -47,9 +47,6 @@ router.get('/:movieId',(req,res) => {
 
 router.get('/genre/:genre',(req,res) => {
     // filter by genre
-    console.log('filter route fired');
-    console.log(req.params)
-    
     let filtered_movies = movies.filter( m => m.genre == req.params.genre );
     res.render('index', {movies: filtered_movies})
 });
@@ -75,6 +72,38 @@ router.post('/delete',(req,res) => {
        return (movie.movieId != req.body.delId);
    });
    res.redirect('/');
+});
+
+router.post('/upload/:movieId',(req,res) => {
+    // upload a poster image and attach to movie
+
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    let the_file = req.files.my_file;
+
+    //console.log(the_file.name);
+    //console.log(req.params.movieId);
+    //console.log(__dirname + '/../public/images/' + the_file.name)
+
+    the_file.mv(__dirname + '/../public/images/' + the_file.name , function(err) {
+        // TODO - reimplement this callback to provide user feedback? for now log to server console...
+        //res.writeHead(200, {"Content-Type": "text/plain"});
+        if (err) {
+            console.log(err);
+            //res.write(err);
+            //res.end();
+        } 
+        else {
+            console.log(`uploaded ${the_file.name}`);
+            //res.write("upload of file "+the_file.name+" complete");
+            //res.end();
+            for (let i=0; i<movies.length; i++) {
+                if (movies[i].movieId == req.params.movieId) {
+                    movies[i].posterURL = '/images/' + the_file.name;
+                }
+            }
+        } 
+    });
+    res.redirect('/');
 });
 
 module.exports = router

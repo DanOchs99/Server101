@@ -11,7 +11,7 @@ requires node packages - express, mustache-express
 to start server @ localhost:3000 - node app.js
 
 movies - manage a list of movies
-requires node packages - express, mustache-express, uuid
+requires node packages - express, mustache-express, uuid, express-fileupload
 to start server @ localhost:3000 - node app.js
 
 

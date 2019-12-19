@@ -9,14 +9,20 @@
   {{> menu}}
   <form method="POST" action="/movies/delete">
     <div class="detailDiv">
-      <label id="movieTitle">{{title}}</label>
-      <label id="movieGenre">{{genre}}</label>
+      <div id="movieTitle">{{title}}</div>
+      <div id="movieGenre">{{genre}}</div>
       <button id="delButton">Delete</button><br>
       <img src="{{posterURL}}" class="largePoster" />
-      <label id="movieDesc">{{desc}}</label>
+      <div id="movieDesc">{{desc}}</div>
       <input type="hidden" value="{{movieId}}" name="delId"> 
       
     </div>
+  </form>
+  <br>
+  <form ref='uploadForm' encType="multipart/form-data" class="" action="/movies/upload/{{movieId}}" method="POST">
+    <label id="uploadLabel">Replace poster image</label>
+    <input id="uploadFileChooser" type="file" name="my_file">
+    <button id="uploadButton">Upload</button>
   </form>
 </body>
 

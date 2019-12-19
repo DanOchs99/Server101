@@ -7,11 +7,15 @@ body {
 #menuHome {
     font-size: 20px;
     margin: 10px;
+    color: steelblue;
+    text-decoration: none;
 }
 
 #menuAdd {
     font-size: 20px;
     margin: 10px;
+    color: steelblue;
+    text-decoration: none;
 }
 
 #genreDropdown {
@@ -75,6 +79,7 @@ body {
 .largePoster {
     max-width: 80vw;
     height: auto;
+    margin-left: 20px;
 }
 
 #movieTitle {
@@ -90,10 +95,31 @@ body {
 }
 
 #movieDesc {
+    display: flex;
     font-size: 20px;
     margin: 10px;
 }
 
 .detailDiv {
     display: block;
+}
+
+#uploadLabel {
+    font-size: 20px;
+    margin: 10px;
+    display: block;
+}
+
+#uploadFileChooser {
+    font-size: 20px;
+    margin: 10px;
+    display: block;
+}
+
+#uploadButton {
+    color: white;
+    background-color: steelblue;
+    font-size: 20px;
+    border-radius: 5px;
+    margin: 10px;
 }
