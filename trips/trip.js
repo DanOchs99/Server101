@@ -5,7 +5,7 @@ class Trip {
         this.imageURL = images[dest];
         this.dep = dep;
         this.ret = ret;
-        this.tripId = uuidv4();
+        this.tripId = null;
     }
 }
 

@@ -19,14 +19,6 @@ router.post('/',(req,res) => {
     let username = req.body.username;
     let password = req.body.password;
 
-    // what if there is no session???
-    if (req.session) {
-        console.log('session exists');
-    }
-    else {
-        console.log('there is no session!!!');
-    }
-
     let user = users.find((u) => { return u.username == username; });
     if (user) {
         bcrypt.compare(password, user.hashedPassword)

@@ -17,8 +17,9 @@ router.get('/',(req,res) => {
 router.post('/',(req,res) => {
     // add a new trip
     trip = new Trip(req.session.username, req.body.dest, req.body.dep, req.body.ret);
+    trip.tripId = uuidv4();
     trips.push(trip);
-    res.redirect('/');
+    res.redirect('/trips');
 });
 
 router.post('/remove',(req,res) => {
@@ -26,7 +27,7 @@ router.post('/remove',(req,res) => {
     trips = trips.filter(function (trip) {
         return (trip.tripId != req.body.delTrip);
     });
-    res.redirect('/');
+    res.redirect('/trips');
 });
 
 module.exports = router;
