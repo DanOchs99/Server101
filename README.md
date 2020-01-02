@@ -14,4 +14,6 @@ movies - manage a list of movies
 requires node packages - express, mustache-express, uuid, express-fileupload
 to start server @ localhost:3000 - node app.js
 
-
+blog - create, read, update, delete blog entries from a postgreSQL database
+requires node packages - express, mustache-express, pg-promise, express-session, bcrypt
+to start server @ localhost:3000 - node app.js
