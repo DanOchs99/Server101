@@ -117,18 +117,45 @@ app.post('/register',(req,res) => {
 
 // main view route - /posts/all shows all the posts
 app.get('/posts/:cat', authenticate, (req,res) => {
-    if (req.params.cat == 'all') {
-        models.Post.findAll({where: {isPublished: true}}, {order: 'id'})
-        .then(posts => {
-            res.render('posts',{username: req.session.username, categories: [{cat: 'Python'},{cat: 'SQL'}], posts: posts})
+    // get the list of categories for dropdown based on all the published posts
+    models.Post.findAll({where: {isPublished: true}})
+        .then((posts) => {
+            let cat_names = []
+            for (let i=0; i<posts.length; i++) {
+                if (!cat_names.includes(posts[i].dataValues.category)) {
+                    cat_names.push(posts[i].dataValues.category)
+                }
+            }
+            let categories = []
+            for (let i=0; i<cat_names.length; i++) {
+                categories.push({cat: cat_names[i]})
+            }
+            // get the list of posts
+            if (req.params.cat == 'all') {
+                models.Post.findAll({where: {isPublished: true}}, {order: 'id'})
+                .then(posts => {
+                    res.render('posts',{username: req.session.username, categories: categories, posts: posts})
+                })
+                .catch((error) => {
+                    console.log(error)
+                    res.redirect('/posts/all')              
+                })
+            }
+            else {
+                models.Post.findAll({where: {category: req.params.cat, isPublished: true}}, {order: 'id'})
+                .then(posts => {
+                    res.render('posts',{username: req.session.username, categories: categories, posts: posts})
+                })
+                .catch((error) => {
+                    console.log(error)
+                    res.redirect('/posts/all')              
+                })
+            }
         })
-    }
-    else {
-        models.Post.findAll({where: {category: req.params.cat, isPublished: true}}, {order: 'id'})
-        .then(posts => {
-            res.render('posts',{username: req.session.username, categories: [{cat: 'Python'},{cat: 'SQL'}], posts: posts})
+        .catch((error) => {
+            console.log(error)
+            res.redirect('/posts/all')              
         })
-    }
 })
 
 app.get('/manage', authenticate, (req,res) => {
@@ -139,10 +166,28 @@ app.get('/manage', authenticate, (req,res) => {
 })
 
 app.post('/manage', authenticate, (req,res) => {
-    // temp code to make a dummy post and save to DB
-    let post = models.Post.build({title: req.body.title, body: req.body.body, category: req.body.category, isPublished: false, user_id: req.session.user_id })
-    post.save().then(() => {
-        res.redirect('/manage')
+    models.Post.findOne({where: {title: req.body.title, category: req.body.category, user_id: req.session.user_id}})
+    .then((post) => {
+        if(post) {
+            // found matching post - this is an update
+            models.Post.update({body: req.body.body, isPublished: false}, {where: {id: post.dataValues.id}})
+            .then(() => res.redirect('/manage'))
+            .catch((error) => {
+                console.log(error)
+                res.redirect('/manage')
+            })
+        }
+        else {
+            // need to create new post and save it
+            let post = models.Post.build({title: req.body.title, body: req.body.body, category: req.body.category, isPublished: false, user_id: req.session.user_id })
+            post.save().then(() => {
+                res.redirect('/manage')
+            })
+            .catch((error) => {
+                console.log(error)
+                res.redirect('/manage')
+            })
+        }
     })
     .catch((error) => {
         console.log(error)
