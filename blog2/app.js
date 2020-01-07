@@ -132,7 +132,7 @@ app.get('/posts/:cat', authenticate, (req,res) => {
             }
             // get the list of posts
             if (req.params.cat == 'all') {
-                models.Post.findAll({where: {isPublished: true}}, {order: 'id'})
+                models.Post.findAll({include: [{model: models.User, as: 'user'}], where: {isPublished: true}, order: ['id']})
                 .then(posts => {
                     res.render('posts',{username: req.session.username, categories: categories, posts: posts})
                 })
@@ -142,7 +142,7 @@ app.get('/posts/:cat', authenticate, (req,res) => {
                 })
             }
             else {
-                models.Post.findAll({where: {category: req.params.cat, isPublished: true}}, {order: 'id'})
+                models.Post.findAll({include: [{model: models.User, as: 'user'}], where: {category: req.params.cat, isPublished: true}, order: ['id']})
                 .then(posts => {
                     res.render('posts',{username: req.session.username, categories: categories, posts: posts})
                 })
