@@ -8,13 +8,14 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-  <title>Blog App - Manage</title>
+  <title>Blog App - Post Detail</title>
 </head>
 
 <body>
-  <h1>{{username}}'s Posts</h1>
+  <h1>Post Detail</h1>
 
   <div class='container'>
+
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/posts/all">Blog App</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,7 +26,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/posts/all">View Posts</a>
         </li>
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="/manage">Manage Posts</a>
         </li>
         <li class="nav-item">
@@ -35,11 +36,39 @@
     </div>
   </nav>
 
-  <form action="/manage" method="POST">
-    <div class="form-group">
-      <label for="blogCategory">Category</label>
-      <input type="text" name="category" class="form-control" placeholder="Category">
-    </div>
+  <ul class="list-group">
+      <li class="list-group-item">
+        <div>
+          <div>User: {{post.user.username}}</div>
+          <div>Category: {{post.category}}</div>
+          <div>Title: {{post.title}}</div>
+          <div>{{post.body}}</div>
+        </div>
+      </li>
+  </ul>
+
+  <ul class="list-group">
+    {{#post.comments}}
+      <form action="/del-comment" method='POST'>
+      <li class="list-group-item">
+        <div>
+          <div>Title: {{dataValues.title}}</div>
+          <div>{{dataValues.body}}</div>
+          <input type="hidden" name="post_id" value={{dataValues.post_id}}>
+          <input type="hidden" name="comment_id" value={{dataValues.id}}>
+          <button type="submit" class="btn btn-primary btn-sm" {{dataValues.buttonState}}>Remove</button>
+        </div>
+      </li>
+      </form>
+    {{/post.comments}}
+    {{^post.comments}}
+      <li class="list-group-item">
+        <div>No comments found.</div>
+      </li>
+    {{/post.comments}}
+  </ul>
+
+  <form action="/add-comment" method="POST">
     <div class="form-group">
       <label for="blogTitle">Title</label>
       <input type="text" name="title" class="form-control" placeholder="Title">
@@ -48,34 +77,10 @@
       <label for="blogBody">Body</label>
       <input type="text" name="body" class="form-control" placeholder="Body">
     </div>
-    <button type="submit" class="btn btn-primary">New Post</button>
+    <input type="hidden" name="post_id" value={{post.id}}>
+    <button type="submit" class="btn btn-primary">New Comment</button>
   </form>
 
-  <ul class="list-group">
-    {{#posts}}
-      <li class="list-group-item">
-        <div>
-          <div>Published: {{dataValues.isPublished}}</div>
-          <div>Category: {{dataValues.category}}</div>
-          <div>Title: {{dataValues.title}}</div>
-          <div>{{dataValues.body}}</div>
-        </div>
-        <form method="POST" action="/publish">
-          <input type="hidden" value={{dataValues.id}} name="pub_post_id">
-          <button type="submit" class="btn btn-primary btn-sm">Publish</button>
-        </form>
-        <form method="POST" action="/delete">
-          <input type="hidden" value={{dataValues.id}}  name="del_post_id">
-          <button type="submit" class="btn btn-primary btn-sm">Remove</button>
-        </form>
-      </li>
-    {{/posts}}
-    {{^posts}}
-      <li class="list-group-item">
-        <div>No posts found.</div>
-      </li>
-    {{/posts}}
-  </ul>
   </div>
 
   <!-- Optional JavaScript -->
@@ -86,8 +91,3 @@
 </body>
 
 </html>
-
-
-
-
-  

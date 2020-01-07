@@ -48,14 +48,17 @@
 
   <ul class="list-group">
     {{#posts}}
+      <form action='/post-detail/{{dataValues.id}}' method='GET'>
       <li class="list-group-item">
         <div>
           <div>User: {{dataValues.user.username}}</div>
           <div>Category: {{dataValues.category}}</div>
           <div>Title: {{dataValues.title}}</div>
           <div>{{dataValues.body}}</div>
+          <button type="submit" class="btn btn-primary btn-sm">Detail</button>
         </div>
       </li>
+      </form>
     {{/posts}}
     {{^posts}}
       <li class="list-group-item">

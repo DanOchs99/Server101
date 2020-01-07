@@ -158,6 +158,65 @@ app.get('/posts/:cat', authenticate, (req,res) => {
         })
 })
 
+app.get('/post-detail/:post_id',authenticate, (req,res) => {
+    // get the post
+    models.Post.findByPk(req.params.post_id, {include: [{model: models.User, as: 'user'}, {model: models.Comment, as: 'comments'}]})
+    .then(post => {
+        for (let i=0; i<post.comments.length; i++) {
+            if (post.comments[i].dataValues.user_id == req.session.user_id) {
+                post.comments[i].dataValues['buttonState'] = ''
+            }
+            else {
+                post.comments[i].dataValues['buttonState'] = 'disabled'
+            }
+        }
+        res.render('post-detail',{post: post})
+    })
+    .catch((error) => {
+        console.log(error)
+        res.redirect('/posts/all')              
+    })
+})
+
+app.post('/add-comment',authenticate, (req,res) => {
+    models.Comment.findOne({where: {title: req.body.title, user_id: req.session.user_id}})
+    .then((comment) => {
+        if(comment) {
+            // found matching comment - this is an update
+            models.Comment.update({body: req.body.body}, {where: {id: comment.dataValues.id}})
+            .then(() => res.redirect(`/post-detail/${req.body.post_id}`))
+            .catch((error) => {
+                console.log(error)
+                res.redirect('/posts/all')
+            })
+        }
+        else {
+            // need to create new comment and save it
+            let comment = models.Comment.build({title: req.body.title, body: req.body.body, user_id: req.session.user_id, post_id: req.body.post_id })
+            comment.save().then(() => {
+                res.redirect(`/post-detail/${req.body.post_id}`)
+            })
+            .catch((error) => {
+                console.log(error)
+                res.redirect('/posts/all')
+            })
+        }
+    })
+    .catch((error) => {
+        console.log(error)
+        res.redirect('/posts/all')
+    })
+})
+
+app.post('/del-comment',authenticate, (req,res) => {
+    models.Comment.destroy({where: {id: req.body.comment_id}})
+    .then(() => res.redirect(`/post-detail/${req.body.post_id}`))
+    .catch((error) => {
+        console.log(error)
+        res.redirect('/posts/all')
+    })
+})
+
 app.get('/manage', authenticate, (req,res) => {
     models.Post.findAll({where: {user_id: req.session.user_id}}, {order: 'id'})
     .then(posts => {
